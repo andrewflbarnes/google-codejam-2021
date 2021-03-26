@@ -47,9 +47,9 @@ function runTests() {
     cd ${project_dir}
 }
 
-location=$1
+locations=$@
 
-if [ -z "${location}" ]
+if [ -z "${locations}" ]
 then
     locations=qualification/*
 fi
