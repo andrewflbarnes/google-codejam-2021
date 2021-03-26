@@ -3,6 +3,8 @@
 gcl_class=Solution
 gcl_source=${gcl_class}.java
 
+project_dir=$(pwd)
+
 function runTests() {
     local location=$1
 
@@ -41,6 +43,8 @@ function runTests() {
             java ${gcl_class} < ${testpack_in}
         fi
     done
+
+    cd ${project_dir}
 }
 
 location=$1
