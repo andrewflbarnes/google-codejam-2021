@@ -14,7 +14,11 @@ function runTests() {
     printf "\033[32m===>\033[35m ${location}\033[0m\n"
 
     printf "Compiling..."
-    javac ${gcj_source}
+    if ! javac ${gcj_source}
+    then
+        printf "\033[31mCompilation failed\033[0m\n"
+        return
+    fi
     printf "\033[32mdone\033[0m\n"
 
     testpacks=$(find . -type f -name "testdata*in")
