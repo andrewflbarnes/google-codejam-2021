@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-gcl_class=Solution
-gcl_source=${gcl_class}.java
+gcj_class=Solution
+gcj_source=${gcj_class}.java
+gcj_default_locations=qualification
 
 project_dir=$(pwd)
 
@@ -13,7 +14,7 @@ function runTests() {
     printf "\033[32m===>\033[35m ${location}\033[0m\n"
 
     printf "Compiling..."
-    javac ${gcl_source}
+    javac ${gcj_source}
     printf "\033[32mdone\033[0m\n"
 
     testpacks=$(find . -type f -name "testdata*in")
@@ -32,7 +33,7 @@ function runTests() {
 
         if [ -r ${testpack_out} ]
         then
-            if ! diff ${testpack_out} <(java ${gcl_class} < ${testpack_in})
+            if ! diff ${testpack_out} <(java ${gcj_class} < ${testpack_in})
             then
                 printf "\033[31mFailed tests\033[0m\n"
             else
@@ -40,7 +41,7 @@ function runTests() {
             fi
         else
             printf "\033[33mran\033[0m\n"
-            java ${gcl_class} < ${testpack_in}
+            java ${gcj_class} < ${testpack_in}
         fi
     done
 
@@ -51,8 +52,19 @@ locations=$@
 
 if [ -z "${locations}" ]
 then
-    locations=qualification/*
+    locations=${gcj_default_locations}
 fi
+
+check_locations=${locations}
+locations=""
+for location in ${check_locations}
+do
+    found_locations=$(find $location -type f -name ${gcj_source})
+    for found in ${found_locations}
+    do
+        locations="${locations} $(dirname ${found})"
+    done
+done
 
 for location in ${locations}
 do
